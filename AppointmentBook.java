@@ -22,16 +22,7 @@ public class AppointmentBook {
         for(int i = startMinute; i < startMinute + duration; i++){
             schedule[period-1][i] = false;
         }
-        for(int i = startPeriod; i <= endPeriod; i++){
-            int freeBlock = findFreeBlock(i, duration);
-            if (freeBlock > -1)
-            {
-                reserveBlock(i, freeBlock, duration);
-                return true;
-        }
-        return false;
-        }
-        /* implementation not shown */ }
+    }
 
     /**
      * Searches for the first block of duration free minutes during period, as
@@ -43,16 +34,20 @@ public class AppointmentBook {
      */
     public int findFreeBlock(int period, int duration) {
         int block = 0;
-        for(int i = 0; i < 60; i++)
-        if(isMinuteFree(period, i)){
-            block++;
-            if(block == duration){
-                return i - duration + 1;
+        for(int i = 0; i < 60; i++){
+            if(isMinuteFree(period, i)){
+                block++;
+                if(block == duration){
+                    return i - duration + 1;
+                }
+                else {
+                    block = 0;
+                }
+            
             }
-            else block = 0;
-        return -1;
         }
-        /* to be implemented in part (a) */ }
+    return -1;
+    }
 
     /**
      * Searches periods from startPeriod to endPeriod, inclusive, for a block
@@ -63,12 +58,14 @@ public class AppointmentBook {
      * Preconditions: 1 <= startPeriod <= endPeriod <= 8; 1 <= duration <= 60
      */
     public boolean makeAppointment(int startPeriod, int endPeriod, int duration){
-        schedule = new boolean[8][60];
-        for(int i = 25; i < 30; i++) schedule[1][i] = true;
-        for(int i = 0; i < 15; i++) schedule[2][i] = true;
-        for(int i = 41; i < 60; i++) schedule[2][i] = true;
-        for(int i = 5; i < 30; i++) schedule[3][i] = true;
-        for(int i = 44; i < 60; i++) schedule[3][i] = true;
+        for(int i = startPeriod; i <= endPeriod; i++){
+            int freeBlock = findFreeBlock(i, duration);
+            if (freeBlock > -1){
+                reserveBlock(i, freeBlock, duration);
+                return true;
+            }
+        }
+        return false;
      /* to be implemented in part (b) */ }
 
     // There may be instance variables, constructors, and methods that are not shown.
